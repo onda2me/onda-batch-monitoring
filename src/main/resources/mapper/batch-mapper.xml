@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+     
+    <mapper namespace="com.onda2me.app.mapper.BatchMapper">
+        <resultMap id="instanceResultMap" type="BatchJobInstanceEntity">
+          <id property="instanceId" column="job_instance_id" />
+          <result property="version" column="version"/>          
+          <result property="jobName" column="job_name"/>
+          <result property="jobKey" column="job_key"/>
+                 
+          <association property="exec" resultMap="executionResultMap" />
+          <collection property="execParams" ofType="BatchJobExecutionParamsEntity" resultMap="paramsResultMap" />
+        </resultMap>
+        
+        <resultMap id="executionResultMap" type="BatchJobExecutionEntity">
+          <id property="executionId" column="job_execution_id"/>
+          <result property="version" column="version"/>
+          <result property="instanceId" column="job_instance_id"/>
+          <result property="createTime" column="create_time"/>
+          <result property="startTime" column="start_time"/>
+          <result property="endTime" column="end_time"/>
+          <result property="status" column="status"/>
+          <result property="exitCode" column="exit_code"/>
+          <result property="exitMessage" column="exit_message"/>
+          <result property="updateTime" column="last_updated"/>    
+          
+          <collection property="steps" ofType="BatchStepExecutionEntity" resultMap="stepResultMap" />    
+        </resultMap>
+                
+        <resultMap id="paramsResultMap" type="BatchJobExecutionParamsEntity">
+          <id property="primaryKey.executionId" column="job_execution_id" />
+          <id property="primaryKey.keyName" column="key_name" />
+          
+          <result property="executionId" column="job_execution_id"/>         
+          <result property="typeCd" column="type_cd"/>
+          <result property="keyName" column="key_name"/>
+          <result property="stringVal" column="string_val"/>
+          <result property="dateVal" column="date_val"/>
+          <result property="longVal" column="long_val"/>
+          <result property="doubleVal" column="double_val"/>
+          <result property="identifying" column="identifying"/>         
+        </resultMap>
+        
+        <resultMap id="stepResultMap" type="BatchStepExecutionEntity">
+          <id property="stepId" column="step_execution_id" />
+                    
+          <result property="version" column="version"/>         
+          <result property="stepName" column="step_name"/>
+          <result property="executionId" column="job_execution_id"/>
+          <result property="startTime" column="start_time"/>
+          <result property="endTime" column="end_time"/>
+          <result property="status" column="status"/>
+          <result property="commitCount" column="commit_count"/>
+          <result property="readCount" column="read_count"/>
+          <result property="filterCount" column="filter_count"/>
+          <result property="writeCount" column="write_count"/>
+          <result property="readSkipCount" column="read_skip_count"/>
+          <result property="writeSkipCount" column="write_skip_count"/>
+          <result property="processSkipCount" column="process_skip_count"/>
+          <result property="rollbackCount" column="rollback_count"/>
+          <result property="exitCode" column="exit_code"/>
+          <result property="exitMessage" column="exit_message"/>
+          <result property="updateTime" column="last_updated"/>  
+          <result property="jobConfigurationLocation" column="job_configuration_location"/>      
+        </resultMap>
+    
+        <sql id="commonPagingHeader"> SELECT R1.* FROM ( </sql>        
+        <sql id="commonPagingFooter"> ) R1 LIMIT #{pgtl.startNo}, #{pgtl.listPerPage} </sql>
+      
+        <select id="listCount" parameterType="com.onda2me.app.common.SearchMap"  resultType="int">            
+            SELECT count(j.job_instance_id) as cnt
+            FROM batch_job_instance j, batch_job_execution e left join batch_job_execution_params p
+            ON e.job_execution_id = p.job_execution_id and p.key_name = 'channel'
+            WHERE j.job_instance_id = e.job_instance_id
+            <if test="executionId > 0"> and e.job_execution_id = #{executionId} </if> 
+            <if test="jobName != null and jobName != ''"> and j.job_name like concat('%', #{jobName}, '%')</if> 
+            <if test="startDate != null and startDate != ''"> and create_time between concat(#{startDate}, ' 00:00:00') and concat(#{endDate}, ' 23:59:59') </if>
+            <!-- 
+            <if test="startTime != null"> and start_time = #{startTime} </if>             
+            <if test="endTime != null"> and end_time = #{endTime} </if> -->
+            <if test="status != null and status != ''"> and status = #{status} </if>
+        </select>
+                
+        <select id="list" parameterType="com.onda2me.app.common.SearchMap"  resultMap="instanceResultMap">             
+          <if test="pgtl != null"><include refid="commonPagingHeader" /></if>
+            SELECT 
+             j.job_instance_id, j.job_name, 
+             e.job_execution_id, e.version, e.create_time, e.start_time, e.end_time, e.status, e.exit_code, e.exit_message, e.last_updated,
+             p.type_cd, p.key_name, p.string_val, p.date_val, p.long_val, p.double_val, p.identifying
+            FROM batch_job_instance j, batch_job_execution e left join batch_job_execution_params p
+            ON e.job_execution_id = p.job_execution_id and p.key_name = 'channel'
+            WHERE j.job_instance_id = e.job_instance_id
+            <if test="executionId > 0"> and e.job_execution_id = #{executionId} </if> 
+            <if test="jobName != null and jobName != ''"> and j.job_name like concat('%', #{jobName}, '%')</if> 
+            <if test="startDate != null and startDate != ''"> and create_time between concat(#{startDate}, ' 00:00:00') and concat(#{endDate}, ' 23:59:59') </if>
+            <!-- 
+            <if test="startTime != null"> and start_time = #{startTime} </if>             
+            <if test="endTime != null"> and end_time = #{endTime} </if> -->
+            <if test="status != null and status != ''"> and status = #{status} </if>
+            order by j.job_instance_id desc, e.job_execution_id desc, p.key_name asc           
+          <if test="pgtl != null"><include refid="commonPagingFooter" /></if>
+        </select>
+            
+        <select id="selectJobDetail" parameterType="int"  resultMap="instanceResultMap">              
+            SELECT 
+             j.job_instance_id, j.job_name, j.job_key, 
+             e.job_execution_id, e.version, e.create_time, e.start_time, e.end_time, e.status, e.exit_code, e.exit_message, e.last_updated,
+             p.type_cd, p.key_name, p.string_val, p.date_val, p.long_val, p.double_val, p.identifying
+            FROM batch_job_instance j, batch_job_execution e left join batch_job_execution_params p
+            ON e.job_execution_id = p.job_execution_id
+            WHERE j.job_instance_id = e.job_instance_id and e.job_instance_id = #{instanceId}  
+            order by job_instance_id desc, e.job_execution_id desc, p.key_name asc     
+        </select>
+        
+        <select id="selectStepDetail" parameterType="int"  resultMap="executionResultMap">              
+            SELECT 
+             j.job_instance_id, j.job_name, 
+             e.job_execution_id, e.version, e.create_time, e.start_time, e.end_time, e.status, e.exit_code, e.exit_message, e.last_updated,
+             s.*
+            FROM batch_job_instance j, batch_job_execution e left join batch_step_execution s
+            ON e.job_execution_id = s.job_execution_id
+            WHERE j.job_instance_id = e.job_instance_id and e.job_execution_id = #{executionId}        
+        </select> 
+        
+        <select id="listStepDetail" parameterType="int" resultMap="stepResultMap">              
+            SELECT 
+             s.*
+            FROM batch_step_execution s
+            WHERE s.job_execution_id = #{executionId}        
+        </select>  
+            
+            
+    </mapper>

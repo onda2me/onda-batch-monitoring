@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layouts/layout-dev}">
+     
+<th:block layout:fragment="content">  
+      
+    <form name="frm" action="/batch/jobList" method="get">   
+     
+    <div class="row main-head ">
+      <div class="col-4 p-0 main-title "> 
+        Batch List <!--  <span >th:text="${@IConstants.BatchStatus.COMPLETED.name()}"</span> -->
+      </div> 
+      <div class="col-8 p-0 main-toolbar ">
+        
+        <div class="input-group">
+          
+          <select class="form-select" name="status">
+            <option selected value="">Status ALL</option>
+            <option th:each="vo : ${statusList}" th:value="${vo.name()}" th:text="${vo.name()}" th:selected="${#strings.equals(vo.name(), searchMap.status)}"></option>
+          </select>
+          <input type="text" class="form-control form-control-sm mx-2 border" name="jobName" placeholder="JobName" aria-label="jobName" th:value="${searchMap.jobName}"/>                
+          <input type="date" class="form-control form-control-sm " name="startDate" th:value="${searchMap.startDate}" />
+          <span class="px-2">~</span>
+          <input type="date" class="form-control form-control-sm " name="endDate"  th:value="${searchMap.endDate}" />
+          <button class="btn btn-sm btn btn-primary" onclick="goSubmit()"><span class="fa fa-search fs--1"></span></button>
+        </div>
+      </div> 
+    </div>
+    <div class="table-responsive portlet scrollbar">    
+        <table class="table table-sm table-hover tb-success">
+          <thead>
+            <tr class="text-center text-800">
+              <th class="sort white-space-nowrap" data-sort="no">#</th>
+              <th class="sort white-space-nowrap" data-sort="instanceId">insId</th>
+              <th class="sort white-space-nowrap" data-sort="excutionId">exeId</th>
+              <th class="sort white-space-nowrap" data-sort="ver">ver</th>
+              <th class="sort white-space-nowrap" data-sort="jobName">jobName</th>
+              <th class="sort white-space-nowrap" data-sort="channel">channel</th>
+              <th class="sort white-space-nowrap" data-sort="status">status</th>
+              <th class="sort white-space-nowrap" data-sort="exitCode">exitCode</th>
+              <th class="sort white-space-nowrap" data-sort="createTime">createTime</th>
+              <th class="sort white-space-nowrap" data-sort="updateTime">updateTime</th>
+              <th class="no-sort white-space-nowrap">Actions</th>
+           </tr>
+         </thead>
+          <tbody class="list" id="table-orders-body">
+          <th:block th:if="${!#lists.isEmpty(list)}">
+          <tr th:each="job, i : ${list}" class="btn-reveal-trigger align-middle text-center">
+              <td class="no" style="width: 28px;" th:text="${searchMap.pgtl.getSeqNo(i.count)}">0</td>
+              <td class="instanceId"><a th:href="@{/batch/jobDetail(instanceId=${job.instanceId})}" class="prd-link" th:text="${job.instanceId}"></a></td>
+              <td class="excutionId" th:text="${job.exec.executionId}"></td>
+              <td class="ver" th:text="${job.version}"></td>
+              <td class="jobName" th:text="${job.jobName}"></td>
+              <td class="channel" th:text="${job.execParams.get(0).stringVal}"></td>
+              <td class="status"><span th:attr="class=${job.exec.isStatusComplete ? 'badge bg-secondary' : 'badge bg-warning'}">
+                  <span th:text="${job.exec.status}"></span>
+                </span>            
+              </td>
+              <td class="exitCode">
+              <span th:attr="class=${job.exec.isExitComplete ? 'badge bg-secondary' : 'badge bg-warning'}">
+                <span th:text="${job.exec.exitCode}"></span>
+              </span>
+              </td>
+              <td class="createTime" th:text="${@DateUtil.getDateTimeFormat(job.exec.createTime)}"></td>
+              <td class="updateTime" th:text="${@DateUtil.getDateTimeFormat(job.exec.updateTime)}"></td>
+              <td class="">-</td>
+            </tr>          
+            </th:block>
+          </tbody>
+        </table>
+              
+        <th:block th:utext="${searchMap.pgtl.printPageList}"></th:block>
+    </div>
+
+ 
+  </form>
+</th:block>
+      
+</html>
+
+

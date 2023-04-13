@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <th:block th:fragment="common-aside">
+    <aside id="sideContainer" class="side-container w3-card-4" >  
+      <div class="vertical-menu ">
+            
+        <div class="btn-group w-100 btn-group-lg"  style="">
+          <button type="button" id="homeNav" class="btn btn-success w-100"><span class="fa fa-home"></span> Home</button>
+        </div>
+      
+        <a href="#" class="active"><i class="fas fa-thumbtack"></i><span>&nbsp; Ing..</span></a>
+        <ul class="side-nav nav flex-column">        
+          <li class="nav-item">            
+            <a class="nav-link" href="/batch/jobList">/batch/jobList</a>
+          </li>
+        </ul>
+              
+        <a href="#" class="active"><i class=" fas fa-user-circle"></i><span>&nbsp; User</span></a>
+        <ul class="side-nav nav flex-column">        
+          <li class="nav-item">
+            <a class="nav-link disabled" href="/sign/login">/sign/login</a>
+            <a class="nav-link disabled" href="#">Disabled</a>
+           </li>
+        </ul>        
+        <a href="#" class="active"><i class="fas fa-arrow-alt-circle-right"></i><span>&nbsp; batch run</span></a>
+        <ul class="side-nav nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link" href="/batch/simpleJob">simpleJob</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/batch/runJob?jobName=multiStepJob">runJob?multiStepJob</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/batch/runJob?jobName=multiTaskletJob&">runJob?multiTaskletJob</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/batch/runJob?jobName=simpleJob&period=daily">runJob?simpleJob&daily</a>
+          </li>
+        </ul>         
+      </div>         
+    
+    </aside>
+  </th:block>
+</html>

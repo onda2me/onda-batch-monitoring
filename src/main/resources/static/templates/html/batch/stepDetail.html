@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layouts/layout-dev}">
+     
+<th:block layout:fragment="content">  
+
+<div class="card mb-3">
+  <div class="card-header">
+    <div class="row align-items-center">
+      <div class="col">
+        <h5 class="mb-0">Job Execution</h5>
+      </div>
+      <div class="col-auto d-none d-sm-block">
+        <h6 class="text-uppercase text-600"><span class="far fa-caret-square-right"></span> Execution<span class="far fa-caret-square-right  ms-2"></span></h6>
+      </div>
+    </div>
+  </div>
+  <div class="card-body  border-top bg-light">
+  
+	 <div class="row py-0 "  >
+	  <div class="col-lg col-xxl-6 " >
+	    <div class="row" >
+	      <div class="col-4 " >
+	        <p class="fw-semi-bold mb-1">Id</p>
+	      </div>
+	      <div class="col" th:text="${job.executionId}"></div>
+	    </div>
+	    <div class="row">
+	      <div class="col-4 ">
+	        <p class="fw-semi-bold mb-1">Create Time</p>
+	      </div>
+	      <div class="col"  th:text="${@DateUtil.getDateTimeFormat(job.createTime)}"></div>
+	    </div>
+	    <div class="row">
+	      <div class="col-4 ">
+	        <p class="fw-semi-bold mb-1">Start Time</p>
+	      </div>
+	      <div class="col"  th:text="${@DateUtil.getDateTimeFormat(job.startTime)}"></div>
+	    </div>
+	    <div class="row">
+	      <div class="col-4 ">
+	        <p class="fw-semi-bold mb-1">Exit Code</p>
+	      </div>
+	      <div class="col">
+	        <p class="fw-semi-bold mb-1">
+          <span th:attr="class=${job.isExitComplete ? 'badge bg-secondary' : 'badge bg-warning'}">
+            <span th:text="${job.exitCode}"></span>
+          </span>
+	      </div>
+	    </div>
+	  </div>
+	  <div class="col-lg col-xxl-5 mt-4 mt-lg-0 " >
+	    <div class="row">
+	      <div class="col-4 ">
+	        <p class="fw-semi-bold mb-1">Version</p>
+	      </div>
+	      <div class="col" th:text="${job.version}"></div>
+	    </div>
+	    <div class="row">
+	      <div class="col-4 ">
+	        <p class="fw-semi-bold mb-1">Update Time</p>
+	      </div>
+	      <div class="col">
+	        <p class="mb-1" th:text="${@DateUtil.getDateTimeFormat(job.updateTime)}"></p>
+	      </div>
+	    </div>
+	    <div class="row">
+	      <div class="col-4 ">
+	        <p class="fw-semi-bold mb-1">End Time</p>
+	      </div>
+	      <div class="col" th:text="${@DateUtil.getDateTimeFormat(job.endTime)}"></div>
+	    </div>
+	    <div class="row">
+	      <div class="col-4 ">
+	        <p class="fw-semi-bold mb-0">Status</p>
+	      </div>
+	      <div class="col">
+          <span th:attr="class=${job.isStatusComplete ? 'badge bg-secondary' : 'badge bg-warning'}">
+            <span th:text="${job.status}"></span>
+          </span>
+	      </div>
+	    </div>
+	  </div>	  
+      <div class="col-xxl-1" ></div>
+	</div>
+	<div class="row pt-2">
+      <div class="col-lg"  >
+        <div class="row " >
+          <div class="col-lg-2 col-sm-4 " >
+            <p class="fw-semi-bold mb-1">Exit Message</p>
+          </div>
+          <div class="col"><textarea class="form-control" rows="4" readonly th:text="${job.exitMessage}"></textarea></div>
+        </div>       
+      </div>	
+	</div> 
+  </div><!--  
+  <div class="card-footer  border-top">updateTime : ${mo.updateTime }</div>    -->        
+</div>
+<div class="card mb-3">
+
+  <div class="card-header">
+    <div class="row align-items-center">
+      <div class="col">
+        <h5 class="mb-0">Step Execution</h5>
+      </div>
+      <div class="col-auto d-none d-sm-block">
+        <h6 class="text-uppercase text-600"><span class="far fa-caret-square-right"></span> Step Execution<span class="fas fa-fan ms-2"></span></h6>
+      </div>
+    </div>
+  </div>
+  <div class="card-body border-top bg-light">
+  
+    <div class="row g-0 align-items-center border-bottom  px-2"> 
+	    <div class="row g-0 align-items-center py-1">
+   
+	      <div class="col-2">stepName</div>
+	      <div class="col-2">status</div>
+	      <div class="col-1">commit</div>
+	      <div class="col-1">read</div>
+        <div class="col-1">filter</div>
+        <div class="col-1">write</div>
+	      <div class="col-2">startTime</div>
+	      <div class="col-md-auto">endTime</div>	    
+	    </div>
+	    <div class="row g-0 align-items-center py-1">
+          <div class="col-2">&nbsp;</div>
+          <div class="col-2">exitCode</div>
+          <div class="col-1">readSkip</div>
+          <div class="col-1">writeSkip</div>
+          <div class="col-1">processSkip</div>
+          <div class="col-1">rollback</div>
+          <div class="col-2">updateTime</div>
+          <div class="col-md-auto">&nbsp;</div>    	    
+	    </div>
+    </div> 
+    
+    
+    <th:block th:if="${!#lists.isEmpty(job.steps)}">
+    <th:block th:each="step, idx : ${job.steps}">
+
+    <div class="row g-0 align-items-center border-bottom px-2">
+      <div class="row g-0 align-items-center py-1">    
+	      <div class="col-2 text-start"><code th:text="${step.stepName }" ></code></div>
+	      <div class="col-2">
+          <span th:attr="class=${step.isStatusComplete ? 'badge bg-secondary' : 'badge bg-warning'}">
+            <span th:text="${step.status}"></span>
+          </span>
+        </div>     
+	      <div class="col-1 " th:text="${step.commitCount }"></div>
+	      <div class="col-1 " th:text="${step.readCount }"></div>
+        <div class="col-1 " th:text="${step.filterCount }"></div>
+        <div class="col-1 " th:text="${step.writeCount }"></div>	      
+	      <div class="col-2" th:text="${@DateUtil.getDateTimeFormat(step.startTime)}"></div>
+	      <div class="col-md-auto" th:text="${@DateUtil.getDateTimeFormat(step.endTime)}"></div>
+      </div>
+      <div class="row g-0 align-items-center py-1">    
+          <div class="col-2">&nbsp;</div>
+          <div class="col-2" >
+          <span th:attr="class=${step.isExitComplete ? 'badge bg-secondary' : 'badge bg-warning'}">
+            <span th:text="${step.exitCode}"></span>
+          </span></div>      
+          <div class="col-1 " th:text="${step.readSkipCount }"></div>
+          <div class="col-1 " th:text="${step.writeSkipCount }"></div>
+          <div class="col-1 " th:text="${step.processSkipCount }"></div>
+          <div class="col-1 " th:text="${step.rollbackCount }"></div>
+          <div class="col-md-auto" th:text="${@DateUtil.getDateTimeFormat(step.updateTime)}"></div>
+      </div>
+      <div class="row g-0 align-items-center py-1">    
+          <div class="col-2">&nbsp;</div>
+          <div class="col-10"><textarea  class="form-control" rows="4" readonly th:text="${step.exitMessage}"></textarea></div>
+      </div>
+    </div>
+    </th:block></th:block>
+      
+  </div>            
+</div>
+
+</th:block>
+      
+</html>
+
+
+

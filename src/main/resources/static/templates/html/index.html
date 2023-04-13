@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layouts/layout-dev}">
+      
+<th:block layout:fragment="content">          
+  <h2>Welcome!! Onda2Me Home</h2>
+
+  <div class="prd-row">
+   <th:block th:each="num : ${#numbers.sequence(1,8)}">
+   <div class="prd-column nature">
+     
+       <img src="/assets/images/main/mountains.jpg" alt="Mountains" style="width:100%;">
+       <div class="prd-content">
+          <p class="prd-name">
+            <a href="#" class="prd-link">Mountains</a>
+          </p>
+          <p>판매가 : <span class="" th:text="${num}"></span>0,000 원</p>
+          <p>할인가 : <span class="prd-price" th:text="${num}+'0,000'"></span> 원</p>
+       </div>
+    
+     </div>
+     </th:block>
+  </div>   
+</th:block>
+
+			
+</html>
+

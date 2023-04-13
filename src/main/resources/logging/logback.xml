@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>     
+  <!--  
+  12:18:07.141 [main] DEBUG com.onda2me.app.batch.main.DemoRunnableMain
+  [INFO ] 12:18:39.000 c.o.a.b.c.InsertUserJobConfiguration - 
+  [LEVEL] time class [function] 
+  <property name="LOG_PATTERN" value="[%-5level] %d{HH:mm:ss.SSS} %-32logger{32} - %msg%n" />  
+   -->
+      
+  <property name="LOG_DIR" value="logs" />
+  <property name="LOG_PATTERN" value="[%-5level] %d{HH:mm:ss.SSS} %logger{30}.%M - %msg%n" />
+   
+  <!-- 출력설정 --> 
+  <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+    <param name="Target" value="System.out" />
+    <layout class="ch.qos.logback.classic.PatternLayout">
+      <pattern>${LOG_PATTERN}</pattern>
+    </layout>
+  </appender><!--   
+  <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+    <param name="Target" value="System.out" />
+    <layout class="org.apache.log4j.PatternLayout">
+      <pattern>${LOG_PATTERN}</pattern>
+    </layout>
+  </appender>-->
+
+
+  <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+      <file>${LOG_DIR}/log.txt</file>
+      <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+          <!-- Daily RollingFile -->
+          <fileNamePattern>${LOG_DIR}/log-%d{yyyy-MM-dd}.%i.txt</fileNamePattern>
+          <timeBasedFileNamingAndTriggeringPolicy
+                  class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+              <!-- or whenever the file size reaches 100MB -->
+              <maxFileSize>100MB</maxFileSize>
+          </timeBasedFileNamingAndTriggeringPolicy>
+      </rollingPolicy>
+      <encoder>
+          <pattern>${LOG_PATTERN}</pattern>
+      </encoder>
+  </appender> 
+ 
+  <!-- 기본출력 Level : DEBUG / INFO -->
+  <root level="INFO">
+    <appender-ref ref="CONSOLE"/>
+    <appender-ref ref="FILE"/>
+  </root>
+
+  <!-- 3rdparty Loggers --><!-- 
+  <logger name="org.springframework" additivity="false">
+    <level value="DEBUG" />
+  </logger> -->
+  
+  <!-- local env : debug 레벨이상 출력 -->
+  <springProfile name="local"> 
+    <logger name="com.onda2me.app" level="DEBUG" ></logger>
+    <logger name="org.springframework" level="INFO" ></logger>
+    <logger name="org.springframework.security" level="INFO" ></logger>
+  </springProfile>
+  
+  <!-- sample env : info 레벨이상 출력 --> 
+  <springProfile name="sample"> 
+    <logger name="com.onda2me.app" level="INFO" ></logger>
+    <logger name="org.springframework" level="INFO" ></logger>
+  </springProfile>
+</configuration>

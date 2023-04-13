@@ -1,0 +1,98 @@
+#------------------------------------------------
+# Web Server Config
+#------------------------------------------------  
+server:
+  port: 8007
+  servlet:
+    jsp:
+      init-parameters:
+        development: true
+    #context-path: /boot
+        
+#------------------------------------------------
+# Spring Config
+# - jsp, Thymeleaf, Security, Batch Job
+# - spring.main.allow-bean-definition-overriding=true
+# - spring.profiles.active: local / dev / real  
+#------------------------------------------------
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/bootdb
+    username: dbuser
+    password: dbpwd
+    hikari:
+      maximum-pool-size: 2
+  mvc:
+    view:
+      prefix: /WEB-INF/jsp
+      suffix: .jsp
+  security:
+    user:
+      name: admin01
+      password: 1122
+      role: ADMIN
+#------------------------------------------------      
+# controller.view-name : /html/* -> thymeleaf(else jsp) 
+#------------------------------------------------      
+  thymeleaf:
+    cache: false
+    check-template-location: false
+    enabled: true
+    prefix: classpath:/static/templates
+    suffix: .html
+    view-names: /html/*
+#------------------------------------------------
+# spring.batch.job.enabled=false/true    
+# job.names = simpleJob, multiStepJob
+#------------------------------------------------
+  batch:
+    job:
+      enabled: false
+      #names: insertUserJob      
+#------------------------------------------------
+# DB - mybatis config
+#------------------------------------------------  
+mybatis:
+  configuration:
+    default-fetch-size: 100
+    default-statement-timeout: 30
+    map-underscore-to-camel-case: true
+  type-aliases-package: com.onda2me.app.entity
+  mapper-locations: classpath:mapper/*.xml
+
+#------------------------------------------------
+# Quartz
+#------------------------------------------------  
+quartz:
+  config:
+    class:
+      enabled: false
+      
+#------------------------------------------------
+# Batch job cron expression config
+#------------------------------------------------
+cron:
+  exp:
+    quartzJobToBatchJob1: 20 * * * * ?
+
+#------------------------------------------------
+#log file config
+#spring.config.activate.on-profile
+#------------------------------------------------
+logging:
+  config: classpath:logging/logback.xml
+  
+--- #local 환경
+spring.config.activate.on-profile: local
+server:
+   host: local
+  
+--- #sample 환경
+spring.config.activate.on-profile: sample
+server:
+   host: sample
+     
+

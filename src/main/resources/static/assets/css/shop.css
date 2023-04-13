@@ -1,0 +1,212 @@
+/* Onda2me Css */
+
+.card {
+  border: 0;
+}
+
+.shop-container {	
+  max-width: 1400px;
+} 
+
+/* Column container */
+.prd-row {  
+  display: -ms-flexbox; /* IE10 */
+  display: flex;
+  -ms-flex-wrap: wrap; /* IE10 */
+  flex-wrap: wrap;
+}
+.prd-row {
+  margin: -10px -20px;
+}
+
+/* Add padding BETWEEN each column */
+.prd-row,
+.prd-row > .prd-column {
+  padding: 10px;
+}
+
+/* Create three equal columns that floats next to each other */
+.prd-column {
+  float: left;
+  width: 25%;
+  display: block; /* Hide all elements by default */
+}
+
+/* Clear floats after rows */ 
+.prd-row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.prd-info {
+  /* border: 1px solid; */
+  padding: 10px;
+  height: 350px;  
+  background-color: #f2f2f2;
+}
+
+.prd-title {
+
+}
+.prd-name {
+  font-size: 1.25rem;  
+  padding: 1rem 0;
+  font-weight: 600;
+}
+.prd-price {
+  text-decoration-line: line-through;
+}
+.prd-discount {
+  color: blue;
+  font-size: 0.87rem;
+}
+.prd-link {
+  color: #645ca1;
+  /* text-decoration: none;*/
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+} 
+.prd-content {
+  padding: 10px;   
+}
+
+.prd-container {
+  padding: 20px;    
+}
+
+.prd-img {
+  height: 180px;   
+}
+
+/* Responsive layout - makes a two column-layout instead of four columns */
+
+@media screen and (max-width: 900px) {
+  .prd-column {
+    width: 50%;
+  }
+}
+@media screen and (max-width: 600px) {
+  .prd-column {
+    width: 100%;
+  }
+}
+
+.photo-card {
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+}
+
+/* On mouse-over, add a deeper shadow */
+.photo-card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+/* Add some padding inside the card container */
+.photo-container {
+  padding: 10px 16px;
+}
+
+.photo-content {
+  padding: 10px 50x;
+  height: 230px;
+}
+
+/*
+* {
+  box-sizing: border-box;
+}
+
+*/
+/* Position the image imgslides-imgslides-container (needed to position the left and right arrows) */
+.imgslides-container {
+  position: relative;
+}
+
+/* Hide the images by default */
+.imgslides {
+  display: none;
+}
+
+/* Add a pointer when hovering over images */
+.cursor-over {
+  cursor: pointer;
+}
+
+/* Next & previous buttons */
+.slides-prev,
+.slides-next {
+  cursor: pointer;
+  position: absolute;
+  top: 40%;
+  width: auto;
+  padding: 16px;
+  margin-top: -50px;
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Position the "next button" to the right */
+.slides-next {
+  /* right: 0; */
+   right: 16px;
+  border-radius: 3px 0 0 3px;
+}
+
+/* On hover, add a black background color with a little bit see-through */
+.slides-prev:hover,
+.slides-next:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+/* Number text (1/3 etc) */
+.slides-number {
+  /* color: #f2f2f2; */
+  color: #222;
+  font-size: 1rem;
+  padding: 12px;
+  position: absolute;
+  top: 10px;
+}
+
+/* Container for image text */
+.caption-container {
+  text-align: center;
+  background-color: #222;
+  padding: 2px 16px;
+  color: white;
+}
+.slides-row {
+  padding: 10px 0;
+}
+.slides-row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Six columns side by side */
+.slides-column {
+  float: left;
+  /* width: 16.66%; */  
+  height: 100px;  
+  padding-left: 10px;
+}
+
+/* Add a transparency effect for thumnail images */
+.thumnail-img {
+}
+
+.thumbnail-gallery {
+  opacity: 0.6;
+  cursor: pointer;
+}
+
+.active,
+.thumnail-img:hover {
+  opacity: 1;
+}
+
