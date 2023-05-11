@@ -2,7 +2,7 @@
 
 [![Onda2me preview][1]][2]
 
-[1]: /assets/images/post/spring/boot_monitoring_21.png (list)
+[1]: [boot_monitoring_21.png](https://onda2me.github.io/assets/images/post/spring/boot_monitoring_01.png)
 [2]: [https://onda2me.github.io/](https://onda2me.github.io/springboot/01-springboot-monitoring-01/)
 
   
