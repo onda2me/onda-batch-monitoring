@@ -9,3 +9,8 @@
   - Mybatis
   - Spring Batch
   
+
++ ⚡ 스프링 배치 모니터링 관련글
+  - [배치 모니터링 시스템 만들기 - 1/3단계](https://onda2me.github.io/springboot/01-springboot-monitoring-01/)
+  - [배치 모니터링 시스템 만들기 - 2/3단계](https://onda2me.github.io/springboot/01-springboot-monitoring-02/)
+  - [배치 모니터링 시스템 만들기 - 3/3단계](https://onda2me.github.io/springboot/01-springboot-monitoring-03/)
